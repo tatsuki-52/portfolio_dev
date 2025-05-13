@@ -6,10 +6,10 @@ import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.example.demo.models.InquiryForm;
+import com.example.demo.models.InquiryForm2;
 
 @Repository
-public interface InquiryRepository extends JpaRepository<InquiryForm, Long>{
-	Optional<InquiryForm> findById(String id);
-	List<InquiryForm> findAll();
+public interface InquiryRepository2 extends JpaRepository<InquiryForm2, Long>{
+	Optional<InquiryForm2> findById(String id);
+	List<InquiryForm2> findAll();
 }

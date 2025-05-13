@@ -29,3 +29,6 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### macOS 系の不要ファイル ###
+.DS_Store
