@@ -6,6 +6,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import java.util.List;
@@ -14,7 +15,6 @@ import com.example.demo.models.InquiryForm;
 import com.example.demo.models.InquiryForm2;
 import com.example.demo.repositries.InquiryRepository;
 import com.example.demo.repositries.InquiryRepository2;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 @Controller
 @RequestMapping("/")
@@ -47,6 +47,15 @@ public class RootController {
 	public String form2(InquiryForm2 inquiryForm) {
 		return "root/form2";
 	}
+	
+    // 商品情報を削除するときの処理を書きます。
+    @GetMapping("/list/{id}")
+    public String deleteProduct(@PathVariable long id) {
+        // 商品操作サービスを使って、指定された商品情報を削除します。
+    	repository2.deleteById(id);
+        // 削除が完了したら、ホームページに戻ります。
+    	return "redirect:https://127.0.0.1/list";
+    }
 
 	@PostMapping("/form")
 	public String form(@Validated InquiryForm inquiryForm, BindingResult bindingResult, Model model) {

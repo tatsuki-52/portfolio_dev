@@ -1,0 +1,25 @@
+.item-block {
+    margin-bottom: 1.5rem;
+    padding: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background: #f9f9f9;
+}
+
+.item-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.item-row p {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.item-row a {
+    margin-left: auto;
+    color: #c00;
+    text-decoration: underline;
+}

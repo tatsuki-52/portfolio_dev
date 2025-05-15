@@ -12,4 +12,5 @@ import com.example.demo.models.InquiryForm2;
 public interface InquiryRepository2 extends JpaRepository<InquiryForm2, Long>{
 	Optional<InquiryForm2> findById(String id);
 	List<InquiryForm2> findAll();
+	void deleteById(long id);
 }

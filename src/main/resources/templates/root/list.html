@@ -64,13 +64,14 @@
 						</div>
 
 						<h2 class="underline">商品一覧</h2>
-						<div th:each="item : ${list}">
-							<div>
-								<p><strong>名前:</strong> <span th:text="${item.id}"></span></p>
-								<p><strong>内容:</strong> <span th:text="${item.mail}"></span></p>
-								<p><strong>日付:</strong> <span th:text="${item.name}"></span></p>
-								<p><strong>日付:</strong> <span th:text="${item.content}"></span></p>
-							</div>
+						<div th:each="item : ${list}" class="item-block">
+						    <div class="item-row">
+						        <p><strong>ID:</strong> <span th:text="${item.id}"></span></p>
+						        <p><strong>メール:</strong> <span th:text="${item.mail}"></span></p>
+						        <p><strong>名前:</strong> <span th:text="${item.name}"></span></p>
+						        <p><strong>内容:</strong> <span th:text="${item.content}"></span></p>
+						        <a th:href="@{/list/{id}(id=${item.id})}">削除</a>
+						    </div>
 						</div>
 					</div>
 				</div>
