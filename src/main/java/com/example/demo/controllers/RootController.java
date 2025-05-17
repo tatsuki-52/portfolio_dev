@@ -37,18 +37,12 @@ public class RootController {
 		model.addAttribute("list", list);
 		return "root/list";
 	}
-
-	@GetMapping("/form")
-	public String form(InquiryForm inquiryForm) {
-		return "root/form";
-	}
 	
-	@GetMapping("/form2")
-	public String form2(InquiryForm2 inquiryForm) {
-		return "root/form2";
-	}
-	
-    // 商品情報を削除するときの処理を書きます。
+    /**
+     * 商品情報を削除するときの処理。
+     * @param id    編集対象となるID（URLパスから取得）
+     * @return "redirect:https://127.0.0.1/list" 商品一覧を表示するビュー名
+     */
     @GetMapping("/list/{id}")
     public String deleteProduct(@PathVariable long id) {
         // 商品操作サービスを使って、指定された商品情報を削除します。
@@ -56,7 +50,53 @@ public class RootController {
         // 削除が完了したら、ホームページに戻ります。
     	return "redirect:https://127.0.0.1/list";
     }
+   
+    /**
+     * 商品情報を編集するときの処理
+     * @param id    編集対象となるID（URLパスから取得）
+     * @param model ビューにデータを渡すためのオブジェクト
+     * @return "root/edit" 編集フォームを表示するビュー名
+     * @throws IllegalArgumentException 指定されたIDのデータが存在しない場合
+     */
+    @GetMapping("/list/edit/{id}") // ユーザーがアクセスするURLを決定する
+    public String editForm(@PathVariable Long id, Model model) {
+    	// Optional は「値が存在するかもしれないし、存在しないかもしれない」ことを表すクラスです。
+    	// .orElseThrow(...) は「中身がなければ例外を投げる」という操作です。
+    	// 見つからなければ、IllegalArgumentException("Invalid ID") を投げる(不正な引数（argument）が渡されましたというエラー)
+        InquiryForm2 inquiry = repository2.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ID"));
+        model.addAttribute("inquiryForm2", inquiry);
+        return "root/edit"; //表示するテンプレート（HTML）を決定するが、URLには影響しない
+    }
+    
+    /**
+     * 商品情報を編集するときの処理
+     * @param id    編集対象となるID（URLパスから取得）
+     * @param inquiryForm フォームで入力された値
+     * @param result バリデーション結果（エラーの有無や詳細）を格納する
+     * @param model ビューにデータを渡すためのオブジェクト
+     * @return "redirect:https://127.0.0.1/list" 商品一覧画面を表示するビュー名
+     */
+	@PostMapping("/list/edit/{id}")
+	public String updateInquiry(@PathVariable Long id, @Validated InquiryForm2 inquiryForm, BindingResult result, Model model) {
+	    // 入力値にバリデーションエラー（未入力・形式不正など）がある場合
+		if (result.hasErrors()) {
+	        return "root/edit";
+	    }
+		// データベースから id に対応するデータ取得
+	    InquiryForm2 existing = repository2.findById(id).orElseThrow(() -> new IllegalArgumentException("Invalid ID: " + id));
+	    existing.setMail(inquiryForm.getMail());
+	    existing.setName(inquiryForm.getName());
+	    existing.setContent(inquiryForm.getContent());
+	    // データベースに保存(上書き)
+	    repository2.save(existing);
+	    return "redirect:https://127.0.0.1/list";
+	}
 
+	@GetMapping("/form")
+	public String form(InquiryForm inquiryForm) {
+		return "root/form";
+	}
+	
 	@PostMapping("/form")
 	public String form(@Validated InquiryForm inquiryForm, BindingResult bindingResult, Model model) {
 		if (bindingResult.hasErrors()) {
@@ -68,6 +108,11 @@ public class RootController {
 		inquiryForm.clear();
 		model.addAttribute("message", "お問い合わせを受け付けました。");
 		return "root/form";
+	}
+	
+	@GetMapping("/form2")
+	public String form2(InquiryForm2 inquiryForm) {
+		return "root/form2";
 	}
 	
 	@PostMapping("/form2")

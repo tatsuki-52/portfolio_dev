@@ -71,6 +71,7 @@
 						        <p><strong>名前:</strong> <span th:text="${item.name}"></span></p>
 						        <p><strong>内容:</strong> <span th:text="${item.content}"></span></p>
 						        <a th:href="@{/list/{id}(id=${item.id})}">削除</a>
+								<a th:href="@{/list/edit/{id}(id=${item.id})}">編集</a>
 						    </div>
 						</div>
 					</div>
